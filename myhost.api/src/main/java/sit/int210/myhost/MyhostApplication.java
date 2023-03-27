@@ -1,49 +1,32 @@
 package sit.int210.myhost;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import sit.int210.myhost.utils.FrontendProperties;
+import sit.int210.myhost.utils.ProcessManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 public class MyhostApplication {
+	//@Autowired
+	//private FrontendProperties fep;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhostApplication.class, args);
-		
+
+		//FrontendProperties fep = new FrontendProperties();
+		//System.out.println(fep.getUrl());
+
+		//System.out.println(url);
 		System.out.println(System.getProperty("os.name"));
 
-		try {
-			Process process = Runtime.getRuntime().exec("hostname");
-			
-			StringBuilder output = new StringBuilder();
-
-			BufferedReader reader = new BufferedReader(
-				new InputStreamReader(process.getInputStream()));
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				output.append(line + "\n");
-			}
-
-			int exitVal = process.waitFor();
-			if (exitVal == 0) {
-				System.out.println("Success!");
-				System.out.println(output);
-				System.exit(0);
-			} else {
-				//abnormal...
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-			}
-
-		
-
+		ProcessManager p = new ProcessManager("hostname -a");
+		System.out.printf("Executing '%s'%nThe exit value is %d%n", p.getCommand(), p.executeCommand());
+		System.out.printf("The output is %s", p.getOut());
+	}
 }
