@@ -3,7 +3,7 @@ const API_URL = `http://lvmolarn.sit.kmutt.ac.th:50000/api/host/hostname`
 
 export default {
   data: () => ({
-    date: null
+    hostname: ""
   }),
 
   created() {
@@ -14,12 +14,21 @@ export default {
   methods: {
     async fetchData() {
       const url = `${API_URL}`
-      this.hostname = await (await fetch(url)).json()
+      try {
+        let response = await fetch(url)
+        if (response.ok) {
+          this.hostname = await response.text()
+        } else {
+          this.hostname = "ERROR: " + response.statusText 
+        }
+      } catch (error) {
+          this.hostname = "ERROR: Could not connect to " + url 
+      }
     }
   }
 }
 </script>
 
 <template>
-  <p>{{ hostname }}</p>
+{{ hostname }}
 </template>
