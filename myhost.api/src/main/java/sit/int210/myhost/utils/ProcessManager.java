@@ -17,7 +17,7 @@ public class ProcessManager {
 
     public int executeCommand(){
     // The method returns exit value from executing the process, 0 = normal
-        if (!this.command.isEmpty()) {
+        if ((this.command != null) && !this.command.isEmpty()) {
             try {
                 Process process = Runtime.getRuntime().exec(this.command);
                 StringBuilder output = new StringBuilder();
@@ -44,6 +44,6 @@ public class ProcessManager {
                 e.printStackTrace();
                 return 2;
             }
-        } else return 0;
+        } else return 3;
     }
 }
