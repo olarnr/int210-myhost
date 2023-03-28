@@ -4,10 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,16 +11,12 @@ public class ProcessManager {
     @Getter @Setter private String command = "";
     @Getter private String out = "";
 
-    @Value("${frontend.url}")
-    String url;
-
     public ProcessManager(String command){
         this.command = command;
     }
 
     public int executeCommand(){
     // The method returns exit value from executing the process, 0 = normal
-        System.out.println(url);
         if (!this.command.isEmpty()) {
             try {
                 Process process = Runtime.getRuntime().exec(this.command);
